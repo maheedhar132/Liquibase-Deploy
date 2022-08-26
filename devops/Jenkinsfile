@@ -2,13 +2,33 @@ def yamlInput
 def approval
 def secretPath
 def skip
+def environment
+def aws_acc
 pipeline{
 agent any
 stages{
+    stage('Read the branch and set properties'){
+        steps{
+            script{
+                if (env.BRANCH_NAME == 'develop'){
+                    environment = "dev"
+                }
+                else if (env.BRANCH_NAME == 'master'){
+                    environment = 'prod'
+                }
+                else{
+                    environment = "qa"
+                }
+            }
+        }
+    }
     stage('read yaml'){
         steps{
             script {
             yamlInput = readYaml file: "${WORKSPACE}/input.yaml"
+            approval = yamlInput.env_prop."${environment}".approval
+            secretPath = yamlInput.env_prop."${environment}".secretPath
+            aws_acc = yamlInput.env_prop."${environment}".aws_acc
             }
     }
     }
@@ -17,6 +37,14 @@ stages{
             script{
                 if (env.BRANCH_NAME == 'develop'){
                     print("This is develop branch")
+                    if(approval){
+                    print("Deployment details are as follows:")
+                    print(aws_acc)
+                    print(secretPath)
+                    }
+                    else{
+                        print("Deployment denied")
+                    }
                 }
             }
         }

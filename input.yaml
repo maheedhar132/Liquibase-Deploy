@@ -23,3 +23,4 @@ env_prop:
   prod:
     aws_acc: 12345675
     secretPath: /rad/prod
+---
