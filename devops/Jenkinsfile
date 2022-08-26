@@ -37,7 +37,7 @@ stages{
             script{
                 if (env.BRANCH_NAME == 'develop'){
                     print("This is develop branch")
-                    if(approval == "true"){
+                    if(approval){
                     print("Deployment details are as follows:")
                     print(aws_acc)
                     print(secretPath)
