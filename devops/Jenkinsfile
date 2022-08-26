@@ -1,0 +1,25 @@
+def yamlInput
+def approval
+def secretPath
+def skip
+pipeline{
+agent any
+stages{
+    stage('read yaml'){
+        steps{
+            script {
+            yamlInput = readYaml file: "${WORKSPACE}/input.yaml"
+            approval = yamlInput.env_prop."${env.environmentName}".approval
+            secretPath = yamlInput.env_prop."${env.environmentName}".secretPath
+            }
+    }
+    }
+    stage('Deployment'){
+        steps{
+            if (env.BRANCH_NAME == 'develop'){
+                print("This is develop branch")
+            }
+        }
+    }
+}
+}
