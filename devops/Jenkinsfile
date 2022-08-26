@@ -16,8 +16,10 @@ stages{
     }
     stage('Deployment'){
         steps{
-            if (env.BRANCH_NAME == 'develop'){
-                print("This is develop branch")
+            script{
+                if (env.BRANCH_NAME == 'develop'){
+                    print("This is develop branch")
+                }
             }
         }
     }
